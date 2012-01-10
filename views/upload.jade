@@ -1,0 +1,14 @@
+div.container
+  div.content
+    div.page-header
+      h1 Upload Apache Log file
+      div.row
+        div.span16
+          form(method='post', action='upload')
+            fieldset
+              div.clearfix
+                label(for='uploadFile') Select Apache Log File
+                div.input
+                  input#uploadFile.input-file(name='fileInput', type='file')
+              div.actions
+                input.btn.primary(type='submit', value='Upload')

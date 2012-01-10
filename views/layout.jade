@@ -1,0 +1,49 @@
+mixin menu(uri, title, activeMenu)
+  if(activeMenu == title)
+    li.active
+      a(href='#')=title
+  else
+    li
+      a(href='#{uri}')=title
+
+!!! html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='description',content='')
+    meta(name='author', content='')
+    title= title
+
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    style(type='text/css')
+      body {
+        padding-top: 60px;
+      }
+      label {
+        width: 200px;
+      }
+      form .input {
+        margin-left: 220px;
+      }
+      .actions {
+        padding-left: 300px;
+      }
+    link(ref='shortcut icon', href='/images/favicon.ico')
+    link(ref='apple-touch-icon', href='/images/apple-touch-icon.png')
+    link(ref='apple-touch-icon', sizes='72x72', href='/images/apple-touch-icon-72x72.png')
+    link(ref='apple-touch-icon', sizes='114x114', href='/images/apple-touch-icon-114x114.png')
+  body
+    div.topbar
+      div.topbar-inner
+        div.container-fluid
+          a.brand(href='#') Apache Logs Analyzer
+          ul.nav
+            mixin menu('/', 'Home', activeMenu)
+            mixin menu('/upload', 'Upload', activeMenu)
+            mixin menu('/about', 'About', activeMenu)
+          form(action='', class='pull-right')
+            input.input-large(type='text', placeholder='Input Search Keywords')
+            button.btn(type='button') Search
+    != body
