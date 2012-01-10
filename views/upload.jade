@@ -2,13 +2,19 @@ div.container
   div.content
     div.page-header
       h1 Upload Apache Log file
+      - if(message != null && message != ''){
+          div.row
+            div.alert-message.success
+              p
+                strong= message
+      - }
       div.row
         div.span16
-          form(method='post', action='upload')
+          form(method='post', action='/upload', enctype='multipart/form-data')
             fieldset
               div.clearfix
-                label(for='uploadFile') Select Apache Log File
+                label(for='logFile') Select Apache Log File
                 div.input
-                  input#uploadFile.input-file(name='fileInput', type='file')
+                  input#logFile.input-file(name='logFile', type='file')
               div.actions
                 input.btn.primary(type='submit', value='Upload')
