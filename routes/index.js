@@ -21,10 +21,10 @@ exports.uploadLogFile = function(req, res, next){
             res.redirect('back');
         }
     });
-    /*
+
     req.form.on('progress', function(bytesReceived, bytesExpected){
         var percent = (bytesReceived / bytesExpected * 100) | 0;
         process.stdout().write('Uploading: %' + percent + '\r');
     });
-    */
+
 }
