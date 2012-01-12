@@ -43,7 +43,7 @@ app.get('/', routes.index);
 app.get('/upload', routes.upload);
 app.post('/upload', routes.uploadLogFile);
 
-app.listen(3000);
+app.listen(3333);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 // Socket IO events
