@@ -8,7 +8,7 @@ block append scripts
 
         $('.primary').click(function(){
             var taskId = new Date().getTime();
-            var socket = io.connect('http://localhost:3333');
+            var socket = io.connect();
             socket.on('connect', function(){
                 socket.emit('UP_START', {taskId: taskId});
             });
