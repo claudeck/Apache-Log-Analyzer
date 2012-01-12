@@ -1,30 +1,35 @@
 /*
  * GET home page.
  */
+var events = require('events');
+var up = require('../utils/upload_progress');
 
 exports.index = function (req, res) {
     res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Home' })
 };
 
 exports.upload = function (req, res) {
-    var message = req.flash('info');
-    res.render('upload', {title:'Upload', activeMenu:'Upload', message : message})
+    var sessionId = req.sessionID;
+    res.render('upload', {title:'Upload', activeMenu:'Upload', sessionId: sessionId})
 };
 
 exports.uploadLogFile = function(req, res, next){
+    var taskId = req.query.taskId;
     req.form.complete(function(err, fields, files){
         if(err){
             next(err);
         } else {
+            up.progress(taskId, 100, 100);
             console.log('\nuploaded %s to %s', files.logFile.filename, files.logFile.path);
-            req.flash('info', 'uploaded ' + files.logFile.filename + ' to ' + files.logFile.path);
-            res.redirect('back');
+            res.send('uploaded ' + files.logFile.filename + ' to ' + files.logFile.path,
+                {'Content-Type': 'text/plain'},
+                200
+            );
         }
     });
 
     req.form.on('progress', function(bytesReceived, bytesExpected){
-        var percent = (bytesReceived / bytesExpected * 100) | 0;
-        process.stdout().write('Uploading: %' + percent + '\r');
+        up.progress(taskId, bytesReceived, bytesExpected);
     });
 
 }

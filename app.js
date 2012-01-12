@@ -6,6 +6,7 @@ var express = require('express');
 var routes = require('./routes');
 var form = require('connect-form');
 var io = require('socket.io');
+var up = require('./utils/upload_progress');
 
 delete express.bodyParser.parse['multipart/form-data'];
 
@@ -48,7 +49,11 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 
 // Socket IO events
 socket.sockets.on('connection', function(socket){
-    socket.on('start upload log file', function(data){
-        
+    socket.on(up.SERVER_EVENTS.START, function(data){
+        up.addTask(data.taskId, socket);
+    });
+
+    socket.on('disconnect', function(){
+        up.removeTask(socket);
     });
 });

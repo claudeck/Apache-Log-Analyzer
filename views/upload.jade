@@ -1,14 +1,30 @@
 extends layout
 
-block scripts
+block append scripts
   script(src='/socket.io/socket.io.js')
   script
     $(document).ready(function(){
-        $('#uploadLogFileForm').submit(function(){
+        $('#messageAlert').hide();
+
+        $('.primary').click(function(){
+            var taskId = new Date().getTime();
             var socket = io.connect('http://localhost:3333');
-            socket.emit('start upload log file');
-            socket.on('upload progress', function(data){
-                $('#progress').text(data.radio + '%');
+            socket.on('connect', function(){
+                socket.emit('UP_START', {taskId: taskId});
+            });
+            socket.on('UP_PROGRESS', function(data){
+                $('#message').html(data.percent + '%' + '    ' + data.bytesReceived + "/" + data.bytesExpected);
+
+                if(data.percent == 100){
+                    socket.disconnect();
+                    $('#message').html('文件已经上传完毕!');
+                }
+            });
+            socket.on('UP_SERVER_PREPARED', function(){
+                $('#uploadLogFileForm').attr('action', '/upload?taskId=' + taskId);
+                $('#uploadLogFileForm').submit();
+                $('#messageAlert').show();
+                $('#message').html('0%');
             });
         });
     });
@@ -18,12 +34,10 @@ block content
     div.content
       div.page-header
         h1 Upload Apache Log file
-        - if(message != null && message != ''){
-            div.row
-              div.alert-message.success
-                p
-                  strong= message
-        - }
+          div#messageAlert.row
+            div.alert-message.success
+              p
+                strong#message 0%
         div.row
           div.span16
             form(id='uploadLogFileForm', name='uploadLogFileForm', method='post', action='/upload', enctype='multipart/form-data', target='iframeUpload')
@@ -33,8 +47,5 @@ block content
                   div.input
                     input#logFile.input-file(name='logFile', type='file')
                 div.actions
-                  input.btn.primary(type='submit', value='Upload')
+                  input.btn.primary(type='button', value='Upload')
           iframe(name='iframeUpload',style='display:none')
-        div.row
-          div#progress.span16
-            0%
