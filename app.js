@@ -5,7 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var form = require('connect-form');
-var io = require('socket.io');
+var socketIo = require('socket.io');
 
 delete express.bodyParser.parse['multipart/form-data'];
 
@@ -13,7 +13,7 @@ var app = module.exports = express.createServer(
     form({ keepExtensions: true })
 );
 
-io.listen(app);
+var io = socketIo.listen(app);
 
 // Configuration
 
