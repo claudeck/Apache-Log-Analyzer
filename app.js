@@ -5,7 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var form = require('connect-form');
-var socketIo = require('socket.io');
+var io = require('socket.io');
 
 delete express.bodyParser.parse['multipart/form-data'];
 
@@ -13,7 +13,7 @@ var app = module.exports = express.createServer(
     form({ keepExtensions: true })
 );
 
-var io = socketIo.listen(app);
+var socket = io.listen(app);
 
 // Configuration
 
@@ -47,6 +47,8 @@ app.listen(3333);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 // Socket IO events
-io.sockets.on('connection', function(socket){
-    
+socket.sockets.on('connection', function(socket){
+    socket.on('start upload log file', function(data){
+        
+    });
 });
