@@ -34,6 +34,9 @@ html(lang='en')
     link(ref='apple-touch-icon', href='/images/apple-touch-icon.png')
     link(ref='apple-touch-icon', sizes='72x72', href='/images/apple-touch-icon-72x72.png')
     link(ref='apple-touch-icon', sizes='114x114', href='/images/apple-touch-icon-114x114.png')
+    
+    block scripts
+      
   body
     div.topbar
       div.topbar-inner
@@ -46,4 +49,7 @@ html(lang='en')
           form(action='', class='pull-right')
             input.input-large(type='text', placeholder='Input Search Keywords')
             button.btn(type='button') Search
-    != body
+    block content
+    block foot
+      footer
+        p &copy; Company 2012
