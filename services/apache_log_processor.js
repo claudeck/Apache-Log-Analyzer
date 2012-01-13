@@ -2,8 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var Lazy = require('lazy');
 var async = require('async');
-var solr = require('./Solr');
-var util = require('./Util');
+var solr = require('./solr');
+var util = require('./util');
 var UUID = require('uuid-js');
 
 var LINE_PATTERN = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - - \[(\d{1,2}\/[a-zA-Z]{3}\/\d{4}:\d{2}:\d{2}:\d{2} -\d{4})\] "([A-Z]+) (.+?) HTTP\/1\.1" (\d{3}) (\d+) "(.+?)" "(.+?)"/
