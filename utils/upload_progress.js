@@ -1,3 +1,5 @@
+var UUID = require('uuid-js');
+
 var CLIENT_EVENTS = exports.CLIENT_EVENTS = {
     'SERVER_PREPARED' : 'UP_SERVER_PREPARED',
     'PROGRESS' : 'UP_PROGRESS'
@@ -9,16 +11,21 @@ exports.SERVER_EVENTS = {
 
 var taskStore = module.exports.taskStore = {};
 
-module.exports.addTask = function(taskId, socket){
-    taskStore[taskId] = new UploadTask(socket);
-    socket._up_taskId = taskId;
-    socket.emit(CLIENT_EVENTS.SERVER_PREPARED);
+var removeTask = function(socket){
+    if(socket._up_taskId != null){
+        delete taskStore[socket._up_taskId];
+    }
 };
 
-module.exports.removeTask = function(socket){
-    if(socket.taskId != null){
-        delete taskStore[socket.taskId];
-    }
+module.exports.addTask = function(socket){
+    var taskId = UUID.create().toString();
+    taskStore[taskId] = new UploadTask(socket);
+    socket._up_taskId = taskId;
+    socket.emit(CLIENT_EVENTS.SERVER_PREPARED, {taskId: taskId});
+
+    socket.on('disconnect', function(){
+        removeTask(socket);
+    });
 };
 
 module.exports.progress = function(taskId, bytesReceived, bytesExpected){

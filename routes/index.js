@@ -3,6 +3,16 @@
  */
 var events = require('events');
 var up = require('../utils/upload_progress');
+/*
+var kue = require('kue');
+
+// Kue job queue process
+var jobs = kue.createQueue();
+
+jobs.process('logfile', 2, function(job, done){
+
+});
+*/
 
 exports.index = function (req, res) {
     res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Home' })
@@ -25,6 +35,12 @@ exports.uploadLogFile = function(req, res, next){
                 {'Content-Type': 'text/plain'},
                 200
             );
+            /*
+            jobs.create('logfile', {
+                fileName : files.logFile.filename,
+                logFilePath : files.logFile.path
+            }).save();
+            */
         }
     });
 
@@ -32,4 +48,6 @@ exports.uploadLogFile = function(req, res, next){
         up.progress(taskId, bytesReceived, bytesExpected);
     });
 
-}
+};
+
+

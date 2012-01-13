@@ -7,10 +7,15 @@ block append scripts
         $('#messageAlert').hide();
 
         $('.primary').click(function(){
-            var taskId = new Date().getTime();
             var socket = io.connect();
             socket.on('connect', function(){
-                socket.emit('UP_START', {taskId: taskId});
+                socket.emit('UP_START');
+            });
+            socket.on('UP_SERVER_PREPARED', function(data){
+                $('#uploadLogFileForm').attr('action', '/upload?taskId=' + data.taskId);
+                $('#uploadLogFileForm').submit();
+                $('#messageAlert').show();
+                $('#message').html('0%');
             });
             socket.on('UP_PROGRESS', function(data){
                 $('#message').html(data.percent + '%' + '    ' + data.bytesReceived + "/" + data.bytesExpected);
@@ -19,12 +24,6 @@ block append scripts
                     socket.disconnect();
                     $('#message').html('文件已经上传完毕!');
                 }
-            });
-            socket.on('UP_SERVER_PREPARED', function(){
-                $('#uploadLogFileForm').attr('action', '/upload?taskId=' + taskId);
-                $('#uploadLogFileForm').submit();
-                $('#messageAlert').show();
-                $('#message').html('0%');
             });
         });
     });

@@ -50,10 +50,6 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 // Socket IO events
 socket.sockets.on('connection', function(socket){
     socket.on(up.SERVER_EVENTS.START, function(data){
-        up.addTask(data.taskId, socket);
-    });
-
-    socket.on('disconnect', function(){
-        up.removeTask(socket);
+        up.addTask(socket);
     });
 });
