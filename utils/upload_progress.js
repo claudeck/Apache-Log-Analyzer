@@ -2,7 +2,8 @@ var UUID = require('uuid-js');
 
 var CLIENT_EVENTS = exports.CLIENT_EVENTS = {
     'SERVER_PREPARED' : 'UP_SERVER_PREPARED',
-    'PROGRESS' : 'UP_PROGRESS'
+    'PROGRESS' : 'UP_PROGRESS',
+    'FINISH' : 'UP_FINISH'
 };
 
 exports.SERVER_EVENTS = {
@@ -37,6 +38,10 @@ module.exports.progress = function(taskId, bytesReceived, bytesExpected){
     });
 };
 
+module.exports.finish = function(taskId, data){
+    taskStore[taskId].finish(data);
+}
+
 var UploadTask = function(socket){
     this.socket = socket;
     this.percent = 0;
@@ -49,3 +54,6 @@ UploadTask.prototype.progress = function(data){
     }
 }
 
+UploadTask.prototype.finish = function(data){
+    this.socket.emit(CLIENT_EVENTS.FINISH, data);
+}

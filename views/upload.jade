@@ -19,11 +19,10 @@ block append scripts
             });
             socket.on('UP_PROGRESS', function(data){
                 $('#message').html(data.percent + '%' + '    ' + data.bytesReceived + "/" + data.bytesExpected);
-
-                if(data.percent == 100){
-                    socket.disconnect();
-                    $('#message').html('文件已经上传完毕!');
-                }
+            });
+            socket.on('UP_FINISH', function(data){
+                $('#message').html('The Log File is Uploaded!,<a href="/job/'+data.jobId+'">See Processing</a>');
+                socket.disconnect();
             });
         });
     });

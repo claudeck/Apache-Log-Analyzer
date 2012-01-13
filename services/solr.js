@@ -1,11 +1,10 @@
 var request = require('request');
+var fs = require('fs');
 
-exports.update = function (record, callback) {
-    request(
-        {
-            uri:'http://localhost:5555/solr/update/json?commit=true',
-            method:'POST',
-            body:JSON.stringify(record),
+exports.upload = function (jsonFile, callback) {
+    fs.createReadStream(jsonFile).pipe(
+        request({
+            uri:'http://localhost:8080/solr/update/json?commit=true',
             json:true
         },
         function (error, response, body) {
@@ -15,8 +14,8 @@ exports.update = function (record, callback) {
             if(callback != null){
                 callback(error, response, body);
             }
-        }
-    )
+        })
+    );
 }
 
 /*
