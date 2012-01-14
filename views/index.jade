@@ -1,41 +1,278 @@
 extends layout
 
+block styles
+  style(type='text/css')
+    #searchResult,
+    #facetResult {
+      min-height: 500px;
+    }
+
+    #facetResult {
+      margin-left: 0;
+      padding-left: 19px;
+      border-left: 1px solid #eee;
+    }
+
+    .page-header h3 {
+        background-color: whiteSmoke;
+    }
+
+    .actions {
+      padding-left: 300px;
+    }
+
 block content
-  div.container-fluid
-    div.sidebar
-      div.well
-        h5 Sidebar
-        ul
-          li
-            a(href='#') Link
-          li
-            a(href='#') Link
-          li
-            a(href='#') Link
-          li
-            a(href='#') Link
-        h5 Sidebar
-        ul
-          li
-            a(href='#') Link
-          li
-            a(href='#') Link
-          li
-            a(href='#') Link
-          li
-            a(href='#') Link
-    div.content
-      div.hero-unit
-        h1 Hello, World!
-      div.row
-        div.span6
-          h2 Heading
-          p Etiam porta sem malesuada magna mollis euismod.
-           |Integer posuere erat a ante venenatis dapibus posuere
-           |velit aliquet. Aenean eu leo quam. Pellentesque ornare
-           |sem lacinia quam venenatis vestibulum. Duis mollis,
-           |est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+  div.content
+    div.page-header
+      h3 Search Form
+      form(id='searchForm', name='searchForm', method='post', action='/search')
+        dir.row
+          div.span7
+            label(for='keyword') Keyword
+            div.input
+              input#keyword.xlarge(name='keyword', type='text')
+          div.span7
+            label Ip Range
+            div.input
+              div.inline-inputs
+                input#ipStart.small(name='ipStart', type='text')
+                | &nbsp;-&nbsp;
+                input#ipEnd.small(name='ipEnd', type='text')
+        dir.row
+          div.span7
+            label Date Range
+            div.input
+              div.inline-inputs
+                input#dateStart.small(name='dateStart', type='text')
+                | &nbsp;-&nbsp;
+                input#dateEnd.small(name='dateEnd', type='text')
+          div.span7
+            label Uri
+            div.input
+              input#uriKeyword.xlarge(name='uriKeyword', type='text')
+        dir.row
+          div.span7
+            label File Name
+            div.input
+              div.inline-inputs
+                input#fileName.xlarge(name='fileName', type='text')
+          div.span7
+            label Referrer
+            div.input
+              input#referrer.xlarge(name='referrer', type='text')
+        div.actions
+          input.btn.primary(type='submit', value='Search')
+
+    div.row
+      div#searchResult.span12
+        dir.row
+          div.span12 Result:123456, time:0.123ms
+        div.alert-message.block-message.success
           p
-            a.btn(href='#') View details &raquo;
-        div.span5
-        div.span5
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.alert-message.block-message.success
+          p
+            strong IP:&nbsp;
+            | 124.126.2.23 &nbsp;&nbsp;
+            strong Date:&nbsp;
+            | 2012-01-13 01:01:01 &nbsp;&nbsp;
+            strong StatusCode:&nbsp;
+            | 500 &nbsp;&nbsp;
+            strong File:&nbsp;
+            | 1_access.log &nbsp;&nbsp;
+          p
+            strong Uri:&nbsp;
+            |/ehi/core/mobile-fast-quote?null
+          p
+            strong Referrer:&nbsp;
+            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
+          p
+            strong UserAgent:&nbsp;
+            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        div.pagination
+          ul
+            li.prev.disabled
+              a(href='#') &larr; Previous
+            li.active
+              a(href='#') 1
+            li
+              a(href='#') 2
+            li
+              a(href='#') 3
+            li
+              a(href='#') 4
+            li.next
+              a(href='#') Next &rarr;
+
+      div#facetResult.span4
+        h3 Catalog Result
+        div.row
+          div.span2
+            ul
+              strong Status Code
+              li 500(123)
+              li 404(123)
+              li 200(12351)
+        div.row
+          div.span2
+            ul
+              strong Stats
+              li CA(123)
+              li LA(123)
+              li MA(12351)
+        div.row
+          div.span2
+            ul
+              strong Browser
+              li Chrome(123)
+              li FireFox(123)
+              li IE(12351)

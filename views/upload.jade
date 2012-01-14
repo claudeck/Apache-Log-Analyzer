@@ -1,5 +1,17 @@
 extends layout
 
+block styles
+  style(type='text/css')
+    label {
+      width: 200px;
+    }
+    form .input {
+      margin-left: 220px;
+    }
+    .actions {
+      padding-left: 300px;
+    }
+
 block append scripts
   script(src='/socket.io/socket.io.js')
   script
@@ -21,29 +33,29 @@ block append scripts
                 $('#message').html(data.percent + '%' + '    ' + data.bytesReceived + "/" + data.bytesExpected);
             });
             socket.on('UP_FINISH', function(data){
-                $('#message').html('The Log File is Uploaded!,<a href="/job/'+data.jobId+'">See Processing</a>');
+                $('#message').html('The Log File is Uploaded! &nbsp;&nbsp;&nbsp;&nbsp;  <a href="/jobs/'+data.jobId+'">See job processing</a>');
                 socket.disconnect();
+                $('#logFile').val();
             });
         });
     });
 
 block content
-  div.container
-    div.content
-      div.page-header
-        h1 Upload Apache Log file
-          div#messageAlert.row
-            div.alert-message.success
-              p
-                strong#message 0%
-        div.row
-          div.span16
-            form(id='uploadLogFileForm', name='uploadLogFileForm', method='post', action='/upload', enctype='multipart/form-data', target='iframeUpload')
-              fieldset
-                div.clearfix
-                  label(for='logFile') Select Apache Log File
-                  div.input
-                    input#logFile.input-file(name='logFile', type='file')
-                div.actions
-                  input.btn.primary(type='button', value='Upload')
-          iframe(name='iframeUpload',style='display:none')
+  div.content
+    div.page-header
+      h1 Upload Apache Log file
+        div#messageAlert.row
+          div.alert-message.success
+            p
+              strong#message 0%
+      div.row
+        div.span16
+          form(id='uploadLogFileForm', name='uploadLogFileForm', method='post', action='/upload', enctype='multipart/form-data', target='iframeUpload')
+            fieldset
+              div.clearfix
+                label(for='logFile') Select Apache Log File
+                div.input
+                  input#logFile.input-file(name='logFile', type='file')
+              div.actions
+                input.btn.primary(type='button', value='Upload')
+        iframe(name='iframeUpload',style='display:none')

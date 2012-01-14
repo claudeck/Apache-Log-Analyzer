@@ -21,15 +21,7 @@ html(lang='en')
       body {
         padding-top: 60px;
       }
-      label {
-        width: 200px;
-      }
-      form .input {
-        margin-left: 220px;
-      }
-      .actions {
-        padding-left: 300px;
-      }
+    block styles
     link(ref='shortcut icon', href='/images/favicon.ico')
     link(ref='apple-touch-icon', href='/images/apple-touch-icon.png')
     link(ref='apple-touch-icon', sizes='72x72', href='/images/apple-touch-icon-72x72.png')
@@ -44,13 +36,15 @@ html(lang='en')
         div.container-fluid
           a.brand(href='#') Apache Logs Analyzer
           ul.nav
-            mixin menu('/', 'Home', activeMenu)
+            mixin menu('/', 'Log Search', activeMenu)
             mixin menu('/upload', 'Upload', activeMenu)
-            mixin menu('/about', 'About', activeMenu)
+            mixin menu('/jobs', 'Jobs', activeMenu)
           form(action='', class='pull-right')
             input.input-large(type='text', placeholder='Input Search Keywords')
             button.btn(type='button') Search
-    block content
-    block foot
-      footer
-        p &copy; Company 2012
+
+    div.container
+      block content
+      foot
+        footer
+          p &copy; Company 2012
