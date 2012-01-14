@@ -12,6 +12,22 @@ block styles
       padding-left: 300px;
     }
 
+    .page-header form {
+      margin-bottom: 0px;
+    }
+
+    .page-header h3 {
+        background-color: whiteSmoke;
+        border: 1px solid #ddd;
+        padding-left: 10px;
+    }
+
+    .page-header .actions {
+      padding : 5px 10px 5px 10px;
+      margin-bottom: 0px;
+    }
+
+
 block append scripts
   script(src='/socket.io/socket.io.js')
   script
@@ -43,11 +59,7 @@ block append scripts
 block content
   div.content
     div.page-header
-      h1 Upload Apache Log file
-        div#messageAlert.row
-          div.alert-message.success
-            p
-              strong#message 0%
+      h3 Upload Apache Log file
       div.row
         div.span16
           form(id='uploadLogFileForm', name='uploadLogFileForm', method='post', action='/upload', enctype='multipart/form-data', target='iframeUpload')
@@ -56,6 +68,10 @@ block content
                 label(for='logFile') Select Apache Log File
                 div.input
                   input#logFile.input-file(name='logFile', type='file')
+              div#messageAlert.clearfix
+                div.alert-message.success
+                  p
+                    strong#message 0%
               div.actions
                 input.btn.primary(type='button', value='Upload')
-        iframe(name='iframeUpload',style='display:none')
+      iframe(name='iframeUpload',style='display:none')

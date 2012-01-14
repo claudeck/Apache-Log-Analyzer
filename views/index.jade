@@ -7,19 +7,35 @@ block styles
       min-height: 500px;
     }
 
-    #facetResult {
-      margin-left: 0;
-      padding-left: 19px;
-      border-left: 1px solid #eee;
+    .page-header form {
+      margin-bottom: 0px;
     }
 
     .page-header h3 {
         background-color: whiteSmoke;
+        border: 1px solid #ddd;
+        padding-left: 10px;
     }
 
-    .actions {
-      padding-left: 300px;
+    .page-header .actions {
+      padding : 5px 10px 5px 10px;
+      margin-bottom: 0px;
     }
+
+    .block-message p {
+      word-break: break-all;
+    }
+
+block append scripts
+  script
+    $(document).ready(function(){
+      $('#searchBtn').click(function(){
+        var keyword = $('#keyword').val();
+        if(keyword != ''){
+          $('#searchForm').submit();
+        }
+      })
+    });
 
 block content
   div.content
@@ -54,225 +70,86 @@ block content
           div.span7
             label File Name
             div.input
-              div.inline-inputs
-                input#fileName.xlarge(name='fileName', type='text')
+              select#fileName(name='fileName')
+                option(value='12') 1_access.log(12)
           div.span7
             label Referrer
             div.input
               input#referrer.xlarge(name='referrer', type='text')
         div.actions
-          input.btn.primary(type='submit', value='Search')
+          input#searchBtn.btn.primary(type='button', value='Search')
 
-    div.row
-      div#searchResult.span12
-        dir.row
-          div.span12 Result:123456, time:0.123ms
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.alert-message.block-message.success
-          p
-            strong IP:&nbsp;
-            | 124.126.2.23 &nbsp;&nbsp;
-            strong Date:&nbsp;
-            | 2012-01-13 01:01:01 &nbsp;&nbsp;
-            strong StatusCode:&nbsp;
-            | 500 &nbsp;&nbsp;
-            strong File:&nbsp;
-            | 1_access.log &nbsp;&nbsp;
-          p
-            strong Uri:&nbsp;
-            |/ehi/core/mobile-fast-quote?null
-          p
-            strong Referrer:&nbsp;
-            | http://www.healthinsurance.org/quotes/?prodid=200&ad_type=3&zip=03054&x-source=homepage&-v=1
-          p
-            strong UserAgent:&nbsp;
-            | Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; DROID3 Build/5.5.1_84_D3G-55) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
-        div.pagination
-          ul
-            li.prev.disabled
-              a(href='#') &larr; Previous
-            li.active
-              a(href='#') 1
-            li
-              a(href='#') 2
-            li
-              a(href='#') 3
-            li
-              a(href='#') 4
-            li.next
-              a(href='#') Next &rarr;
+    - if(responseJson)
+      div#result.row
+        div#searchResult.span12
+          dir.alert-message.success
+            p
+              strong Result:
+              | #{responseJson.response.numFound},
+              strong time:
+              | #{responseJson.responseHeader.QTime}ms
+          - responseJson.response.docs.forEach(function(item){
+            div.alert-message.block-message.success
+              p
+                strong IP:&nbsp;
+                | #{item.ipString} &nbsp;&nbsp;
+                strong Date:&nbsp;
+                | #{item.accessTime} &nbsp;&nbsp;
+                strong StatusCode:&nbsp;
+                | #{item.responseCode} &nbsp;&nbsp;
+                strong File:&nbsp;
+                | 1_access.log &nbsp;&nbsp;
+              p
+                strong Uri:&nbsp;
+                | #{item.uri}
+              p
+                strong Referrer:&nbsp;
+                | #{item.referrer}
+              p
+                strong UserAgent:&nbsp;
+                | #{item.userAgent}
+          - })
+          div.pagination
+            ul
+              li.prev.disabled
+                a(href='#') &larr; Previous
+              li.active
+                a(href='#') 1
+              li
+                a(href='#') 2
+              li
+                a(href='#') 3
+              li
+                a(href='#') 4
+              li
+                a(href='#') 5
+              li
+                a(href='#') 6
+              li
+                a(href='#') 7
+              li.next
+                a(href='#') Next &rarr;
 
-      div#facetResult.span4
-        h3 Catalog Result
-        div.row
-          div.span2
-            ul
-              strong Status Code
-              li 500(123)
-              li 404(123)
-              li 200(12351)
-        div.row
-          div.span2
-            ul
-              strong Stats
-              li CA(123)
-              li LA(123)
-              li MA(12351)
-        div.row
-          div.span2
-            ul
-              strong Browser
-              li Chrome(123)
-              li FireFox(123)
-              li IE(12351)
+        div#facetResult.span4
+          h3 Catalog Result
+          div.row
+            div.span2
+              ul
+                strong Status Code
+                li 500(123)
+                li 404(123)
+                li 200(12351)
+          div.row
+            div.span2
+              ul
+                strong Stats
+                li CA(123)
+                li LA(123)
+                li MA(12351)
+          div.row
+            div.span2
+              ul
+                strong Browser
+                li Chrome(123)
+                li FireFox(123)
+                li IE(12351)

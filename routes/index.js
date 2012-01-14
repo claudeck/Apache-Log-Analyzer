@@ -7,6 +7,7 @@ var up = require('../utils/upload_progress');
 
 var kue = require('kue');
 var alp = require('../services/apache_log_processor');
+var solr = require('../services/solr');
 
 // Kue job queue process
 var jobs = kue.createQueue();
@@ -16,7 +17,7 @@ jobs.process('logfile', 2, function (job, done) {
 });
 
 exports.index = function (req, res) {
-    res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Log Search' })
+    res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Log Search', responseJson: null });
 };
 
 exports.jobs = function (req, res) {
@@ -60,4 +61,17 @@ exports.uploadLogFile = function (req, res, next) {
 
 };
 
-
+exports.search = function(req, res, next){
+    var keyword = req.body.keyword;
+    console.log(keyword);
+    solr.search(
+        {q : 'uri:' + keyword},
+        function(err, responseJson){
+            if(err){
+                next(err);
+            }else{
+                res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Log Search', responseJson: responseJson });
+            }
+        }
+    );
+}
