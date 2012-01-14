@@ -7,6 +7,7 @@ var routes = require('./routes');
 var form = require('connect-form');
 var io = require('socket.io');
 var up = require('./utils/upload_progress');
+var solr = require('./services/solr').setserverPath('http://localhost:8080/solr');
 
 delete express.bodyParser.parse['multipart/form-data'];
 
