@@ -17,7 +17,14 @@ jobs.process('logfile', 2, function (job, done) {
 });
 
 exports.index = function (req, res) {
-    res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Log Search', responseJson: null });
+    res.render('index', 
+        { 
+            title:'Apache Logs Analyzer', 
+            activeMenu:'Log Search', 
+            responseJson: null,
+            params: {} 
+        }
+    );
 };
 
 exports.jobs = function (req, res) {
@@ -65,12 +72,22 @@ exports.search = function(req, res, next){
     var keyword = req.body.keyword;
     console.log(keyword);
     solr.search(
-        {q : 'uri:' + keyword},
+        {
+            q: 'uri:' + keyword,
+            start: req.body.start
+        },
         function(err, responseJson){
             if(err){
                 next(err);
             }else{
-                res.render('index', { title:'Apache Logs Analyzer', activeMenu:'Log Search', responseJson: responseJson });
+                res.render('index', 
+                    { 
+                        title:'Apache Logs Analyzer', 
+                        activeMenu:'Log Search', 
+                        responseJson: responseJson,
+                        params: req.body 
+                    }
+                );
             }
         }
     );

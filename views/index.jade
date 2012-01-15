@@ -1,3 +1,4 @@
+
 extends layout
 
 block styles
@@ -27,21 +28,28 @@ block styles
     }
 
 block append scripts
-  script
+  script(type='text/javascript')
     $(document).ready(function(){
       $('#searchBtn').click(function(){
         var keyword = $('#keyword').val();
         if(keyword != ''){
           $('#searchForm').submit();
         }
-      })
+      });
     });
+
+    function turnPage(start){
+      $('#keyword').val('#{params.keyword}');
+      $('#start').val(start);
+      $('#searchForm').submit();
+    }
 
 block content
   div.content
     div.page-header
       h3 Search Form
       form(id='searchForm', name='searchForm', method='post', action='/search')
+        input(type='hidden', name='start', id='start', value='0')
         dir.row
           div.span7
             label(for='keyword') Keyword
@@ -109,29 +117,11 @@ block content
                 strong UserAgent:&nbsp;
                 | #{item.userAgent}
           - })
-          div.pagination
-            ul
-              li.prev.disabled
-                a(href='#') &larr; Previous
-              li.active
-                a(href='#') 1
-              li
-                a(href='#') 2
-              li
-                a(href='#') 3
-              li
-                a(href='#') 4
-              li
-                a(href='#') 5
-              li
-                a(href='#') 6
-              li
-                a(href='#') 7
-              li.next
-                a(href='#') Next &rarr;
+          mixin pagination(responseJson.response.numFound, new Number(responseJson.responseHeader.params.start), 10)
 
         div#facetResult.span4
-          h3 Catalog Result
+          dir.alert-message.success
+            p Catalog Result
           div.row
             div.span2
               ul

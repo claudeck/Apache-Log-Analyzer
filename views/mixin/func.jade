@@ -1,0 +1,39 @@
+mixin menu(uri, title, activeMenu)
+  if(activeMenu == title)
+    li.active
+      a(href='#')=title
+  else
+    li
+      a(href='#{uri}')=title
+
+mixin pagination(total, start, rowNum)
+  div.pagination
+    ul
+      if(start == 0)
+        li.prev.disabled
+          a(href='#') &larr; Previous
+      else
+        li.prev
+          a(href='#', onclick='turnPage("#{start - rowNum}")') &larr; Previous
+      - var maxPage = 9;
+      - var prePages = start / rowNum;
+      - var pStart = 0;
+      - if(prePages - 4 > 0){
+      -   pStart = prePages - 4;
+      - }
+      - var totalPage = total / rowNum + 1;
+      - for(var p = pStart; p < totalPage && (p - pStart < maxPage); p++){ 
+      -   if(start / rowNum == p){
+            li.active
+              a(href='#', onclick='turnPage("#{rowNum * p}")') #{p+1}
+      -   }else{
+            li
+              a(href='#', onclick='turnPage("#{rowNum * p}")') #{p+1}
+      -   }    
+      - }
+      if(start + rowNum >= total)
+        li.next
+          a(href='#') Next &rarr;
+      else
+        li
+          a(href='#', onclick='turnPage("#{start + rowNum}")') Next &rarr;

@@ -34,7 +34,7 @@ exports.search = function (queryOptions, callback) {
         query: {
             q:queryOptions.q,
             version:2.2,
-            start:0,
+            start: queryOptions.start,
             rows:10,
             wt:'json'
         }

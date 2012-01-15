@@ -1,10 +1,4 @@
-mixin menu(uri, title, activeMenu)
-  if(activeMenu == title)
-    li.active
-      a(href='#')=title
-  else
-    li
-      a(href='#{uri}')=title
+include mixin/func
 
 !!! html
 html(lang='en')
