@@ -8,6 +8,9 @@ var up = require('../utils/upload_progress');
 var kue = require('kue');
 var alp = require('../services/apache_log_processor');
 var solr = require('../services/solr');
+var StringUtils = require('../utils/string_utils');
+var jobListeners = require('../services/job_listen');
+var Job = kue.Job;
 
 // Kue job queue process
 var jobs = kue.createQueue();
@@ -28,7 +31,18 @@ exports.index = function (req, res) {
 };
 
 exports.jobs = function (req, res) {
-    res.render('jobs', {title: 'Job Processing', activeMenu: 'Jobs'});
+    Job.range(0, 10, 'desc', function(err, jobs){
+        if (err) return res.send({ error: err.message });
+        console.log(util.inspect(jobs));
+        res.render('jobs', 
+            {
+                title: 'Job Processing', 
+                activeMenu: 'Jobs',
+                jobs : jobs
+            }
+        );
+    });
+
 };
 
 exports.upload = function (req, res) {
@@ -42,8 +56,9 @@ exports.uploadLogFile = function (req, res, next) {
             next(err);
         } else {
             var job = jobs.create('logfile', {
-                fileName:files.logFile.filename,
-                logFilePath:files.logFile.path
+                fileName: files.logFile.filename,
+                logFilePath: files.logFile.path,
+                startTime: new Date()
             });
 
             (function (job, taskId) {
@@ -52,6 +67,11 @@ exports.uploadLogFile = function (req, res, next) {
                         jobId:job.id
                     });
                 });
+                    
+                job.on('progress', function(progress){
+                    jobListeners.progress(job.id, progress);
+                });
+
             })(job, taskId);
 
             console.log('\nuploaded %s to %s', files.logFile.filename, files.logFile.path);
@@ -68,12 +88,52 @@ exports.uploadLogFile = function (req, res, next) {
 
 };
 
+function buildAccessTime(dateStart, dateEnd){
+    var dateRange = [];
+    if(StringUtils.isNotBlank(dateStart)){
+        dateRange.push(dateStart);
+    }
+    if(StringUtils.isNotBlank(dateEnd)){
+        dateRange.push(dateEnd);
+    }
+
+    if(dateRange.length == 0){
+        return null;
+    }else if(dateRange.length == 1){
+        return dateRange[0];
+    }else{
+        return '[' + dateRange[0] + ' TO ' + dateRange[1] + ']';
+    }
+}
+
+function createQuery(req){
+    var keywords = {
+      keyword: req.body.keyword,
+      accessTime: buildAccessTime(req.body.dateStart, req.body.dataEnd),
+      uri: req.body.uriKeyword,
+      referrer: req.body.referrer,
+      userAgent: req.body.userAgent
+    };
+
+    var hasConditions = false;
+    var clauses = [];
+    for(var key in keywords){
+        if(StringUtils.isNotBlank(keywords[key])){
+            hasConditions = true;
+            clauses.push('(' + key + ':' + keywords[key] + ')');
+        }
+    }
+    var q = "*:*";
+    if(hasConditions){
+        q = clauses.join(' AND ');
+    }
+    return q;
+}
+
 exports.search = function(req, res, next){
-    var keyword = req.body.keyword;
-    console.log(keyword);
     solr.search(
         {
-            q: 'uri:' + keyword,
+            q: createQuery(req),
             start: req.body.start
         },
         function(err, responseJson){

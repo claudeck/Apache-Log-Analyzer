@@ -30,17 +30,46 @@ block styles
 block append scripts
   script(type='text/javascript')
     $(document).ready(function(){
+
       $('#searchBtn').click(function(){
-        var keyword = $('#keyword').val();
-        if(keyword != ''){
+        var haveCondition = false;
+
+        var keywords = $('#searchForm').serializeArray();
+
+        for(var k = 0; k < keywords.length; k++){
+          if(keywords[k] != ''){
+            haveCondition = true;
+            break;
+          }
+        }
+
+        if(haveCondition){
           $('#searchForm').submit();
+        }else{
+          alert("Don't input any keywords!!");
+          return;
         }
       });
+
     });
 
     function turnPage(start){
       $('#keyword').val('#{params.keyword}');
+      $('#dateStart').val('#{params.dateStart}');
+      $('#dateEnd').val('#{params.dateEnd}');
+      $('#uriKeyword').val('#{params.uriKeyword}');
+      $('#fileName').val('#{params.fileName}');
+      $('#referrer').val('#{params.referrer}');
+      $('#userAgent').val('#{params.userAgent}');
       $('#start').val(start);
+      $('#searchForm').submit();
+    }
+
+    function query(values){
+      for(var k in values){
+        $('#' + k).val(values[k]);
+      }
+      $('#start').val(0);
       $('#searchForm').submit();
     }
 
@@ -56,34 +85,31 @@ block content
             div.input
               input#keyword.xlarge(name='keyword', type='text')
           div.span7
-            label Ip Range
-            div.input
-              div.inline-inputs
-                input#ipStart.small(name='ipStart', type='text')
-                | &nbsp;-&nbsp;
-                input#ipEnd.small(name='ipEnd', type='text')
-        dir.row
-          div.span7
             label Date Range
             div.input
               div.inline-inputs
                 input#dateStart.small(name='dateStart', type='text')
                 | &nbsp;-&nbsp;
                 input#dateEnd.small(name='dateEnd', type='text')
+        dir.row
           div.span7
             label Uri
             div.input
               input#uriKeyword.xlarge(name='uriKeyword', type='text')
-        dir.row
           div.span7
             label File Name
             div.input
               select#fileName(name='fileName')
                 option(value='12') 1_access.log(12)
+        dir.row
           div.span7
             label Referrer
             div.input
               input#referrer.xlarge(name='referrer', type='text')
+          div.span7
+            label UserAgent
+            div.input
+              input#userAgent.xlarge(name='userAgent', type='text')
         div.actions
           input#searchBtn.btn.primary(type='button', value='Search')
 
@@ -109,7 +135,7 @@ block content
                 | 1_access.log &nbsp;&nbsp;
               p
                 strong Uri:&nbsp;
-                | #{item.uri}
+                | <a href='#' onclick='query({uriKeyword:"#{item.uri}"})'>#{item.uri}</a>
               p
                 strong Referrer:&nbsp;
                 | #{item.referrer}

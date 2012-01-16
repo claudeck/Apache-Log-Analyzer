@@ -21,7 +21,7 @@ mixin pagination(total, start, rowNum)
       - if(prePages - 4 > 0){
       -   pStart = prePages - 4;
       - }
-      - var totalPage = total / rowNum + 1;
+      - var totalPage = Math.floor(total / rowNum) + (total % rowNum ==  0 ? 0 : 1);
       - for(var p = pStart; p < totalPage && (p - pStart < maxPage); p++){ 
       -   if(start / rowNum == p){
             li.active
@@ -32,7 +32,7 @@ mixin pagination(total, start, rowNum)
       -   }    
       - }
       if(start + rowNum >= total)
-        li.next
+        li.next.disabled
           a(href='#') Next &rarr;
       else
         li

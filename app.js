@@ -8,6 +8,7 @@ var form = require('connect-form');
 var io = require('socket.io');
 var up = require('./utils/upload_progress');
 var solr = require('./services/solr').setServerPath('http://localhost:8080/solr');
+var jobListeners = require('./services/job_listen');
 
 delete express.bodyParser.parse['multipart/form-data'];
 
@@ -55,4 +56,8 @@ socket.sockets.on('connection', function(socket){
     socket.on(up.SERVER_EVENTS.START, function(data){
         up.addTask(socket);
     });
+    
+    socket.on('START_JOB_LISTEN', function(data){
+        jobListeners.addListener(socket);
+    })
 });

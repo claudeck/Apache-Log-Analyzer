@@ -1,1 +1,29 @@
 extends layout
+
+block styles
+
+block append scripts
+
+block content
+  div.content
+    div.page-header
+      h3 Jobs Processing
+    div#jobs.row
+      - jobs.forEach(function(item){
+        div.span16
+          div.alert-message.block-message.success
+            p
+              strong Job Id:&nbsp;
+              | #{item.id}# &nbsp;&nbsp;
+              strong Log File Name:&nbsp;
+              | #{item.data.fileName}&nbsp;&nbsp;
+              strong Start Time:&nbsp;
+              | #{item.startTime} &nbsp;&nbsp;
+              strong End Time:&nbsp;
+              | 2012-01-01 12:12:20 &nbsp;&nbsp;
+            p
+              strong Processing:&nbsp;
+            p  
+              div.row(style='background-color:red;min-height:20px; margin:0px')
+                  div.row(style='background-color:blue; min-height:20px; width:25%; margin:0px')
+      - });
