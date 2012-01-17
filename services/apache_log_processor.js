@@ -3,7 +3,7 @@ var path = require('path');
 var Lazy = require('lazy');
 var async = require('async');
 var solr = require('./solr');
-var Util = require('./util');
+var Util = require('./utils');
 var UUID = require('uuid-js');
 var util = require('util');
 
