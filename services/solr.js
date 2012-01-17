@@ -1,17 +1,12 @@
 var request = require('request');
 var fs = require('fs');
 var url = require('url');
-
-var solrUrl = 'http://localhost:8080/solr';
-
-module.exports.setServerPath = function(serverPath){
-    solrUrl = serverPath;
-};
+var SolrServer = require('config').Solr;
 
 exports.upload = function (jsonFile, callback) {
     fs.createReadStream(jsonFile).pipe(
         request({
-                uri: solrUrl + '/update/json?commit=true',
+                uri: SolrServer.url + '/update/json?commit=true',
                 json:true
             },
             function (error, response, body) {
@@ -39,7 +34,6 @@ exports.search = function (queryOptions, callback) {
             wt:'json'
         }
     });
-    console.log(searchUrl);
     request(
         {
             uri:searchUrl

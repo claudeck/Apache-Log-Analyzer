@@ -7,8 +7,9 @@ var routes = require('./routes');
 var form = require('connect-form');
 var io = require('socket.io');
 var up = require('./utils/upload_progress');
-var solr = require('./services/solr').setServerPath('http://localhost:8080/solr');
 var jobListeners = require('./services/job_listen');
+
+var config = require('config');
 
 delete express.bodyParser.parse['multipart/form-data'];
 
@@ -48,7 +49,7 @@ app.get('/jobs/:id?', routes.jobs);
 app.post('/upload', routes.uploadLogFile);
 app.post('/search', routes.search);
 
-app.listen(3333);
+app.listen(config.Server.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 // Socket IO events
