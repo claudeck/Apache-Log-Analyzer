@@ -3,6 +3,8 @@ var fs = require('fs');
 var url = require('url');
 var SolrServer = require('config').Solr;
 
+SolrServer.url = url.parse(SolrServer.url);
+
 exports.upload = function (jsonFile, callback) {
     fs.createReadStream(jsonFile).pipe(
         request({
