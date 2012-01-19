@@ -16,7 +16,7 @@ var Job = kue.Job;
 var jobs = kue.createQueue();
 
 jobs.process('logfile', 2, function (job, done) {
-    alp.importToSolr(job.data, done);
+    alp.importToSolr(job, done);
 });
 
 exports.index = function (req, res) {
@@ -69,7 +69,10 @@ exports.uploadLogFile = function (req, res, next) {
                 });
                     
                 job.on('progress', function(progress){
-                    jobListeners.progress(job.id, progress);
+                    jobListeners.progress({
+                        jobId: jobId,
+                        progress: progress
+                    });
                 });
 
             })(job, taskId);

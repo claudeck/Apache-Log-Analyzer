@@ -12,8 +12,8 @@ module.exports.removeListener = function(socket){
   delete listeners[socket.listenerId];
 };
 
-module.exports.progress = function(progress){
+module.exports.progress = function(jobProgress){
   for(var lid in listeners){
-    listeners[lid].emit('JOB_LISTEN', progress);
+    listeners[lid].emit('JOB_LISTEN', jobProgress);
   }
 }

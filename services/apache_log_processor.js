@@ -4,11 +4,11 @@ var Utils = require('./utils/utils');
 var ReadLine = require('./utils/readline');
 var UUID = require('uuid-js');
 var util = require('util');
-var jobListeners = require('./job_listen');
 
 var LINE_PATTERN = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - - \[(\d{1,2}\/[a-zA-Z]{3}\/\d{4}:\d{2}:\d{2}:\d{2} -\d{4})\] "([A-Z]+) (.+?) HTTP\/1\.1" (\d{3}) (\d+) "(.+?)" "(.+?)"/
 
-function importToSolr(logFile, done) {
+function importToSolr(job, done) {
+  var logFile = job.data;
   var outFileName = '/tmp/' + logFile.fileName + ".json"
   var outStream = fs.createWriteStream(outFileName);
 
@@ -22,7 +22,7 @@ function importToSolr(logFile, done) {
     var percent = parseInt(readBytes / totalBytes * 100);
     if (percent > readline.progress) {
       console.log("Finish: %d, %d / %d", percent, readBytes, totalBytes);
-      jobListeners.progress(percent);
+      job.emit('progress', percent);
       readline.progress = percent;
     }
   })

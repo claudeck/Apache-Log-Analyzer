@@ -3,6 +3,19 @@ extends layout
 block styles
 
 block append scripts
+  script(src='/socket.io/socket.io.js')
+  script
+    $(document).ready(function(){
+      var socket = io.connect();
+
+      socket.on('connect', function(){
+          socket.emit('START_JOB_LISTEN');
+      });
+
+      socket.on('JOB_LISTEN', function(data){
+        $('#progress_' + data.jobId).width(data.percent + '%');
+      });
+    });
 
 block content
   div.content
@@ -25,5 +38,5 @@ block content
               strong Processing:&nbsp;
             p  
               div.row(style='background-color:red;min-height:20px; margin:0px')
-                  div.row(style='background-color:blue; min-height:20px; width:25%; margin:0px')
+                  div#progress_#{item.id}.row(style='background-color:blue; min-height:20px; width:25%; margin:0px')
       - });
