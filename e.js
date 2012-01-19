@@ -5,8 +5,10 @@ var UUID = require('uuid-js');
 var Utils = require('./services/utils');
 
 function ProcessFileLine(){
-  this.em = new EventEmitter();
+  EventEmitter.call(this);
 }
+
+util.inherits(ProcessFileLine, EventEmitter);
 
 ProcessFileLine.prototype.readFile = function(filePath){
   var $this = this;
@@ -34,7 +36,7 @@ ProcessFileLine.prototype.readLine = function(filePath, stats){
   stream.on('open', function(){
     stream.readLength = 0;
     stream.size = stats.size;
-    $this.em.emit('start');
+    $this.emit('start');
   });
 
   stream.on('data', function(data){
@@ -42,9 +44,8 @@ ProcessFileLine.prototype.readLine = function(filePath, stats){
     var dataLength = data.length;
     var newLine = '\n';
     stream.readLength += dataLength;
-    $this.em.emit('progress', stream.readLength, stream.size);
-    //console.log("%d / %d", stream.readLength, stream.size);
-    
+    $this.emit('progress', stream.readLength, stream.size);
+
     var line = '';
     if(stream.remainder != null){
       line += stream.remainder.toString();
@@ -54,7 +55,7 @@ ProcessFileLine.prototype.readLine = function(filePath, stats){
     for(var i = 0; i < dataLength; i++){
       if(data[i] == newLine){
         line += data.slice(lineStart, i).toString();
-        $this.em.emit('line', null, line);
+        $this.emit('line', null, line);
         lineStart = i+1;
         line = '';
       }
@@ -72,9 +73,9 @@ ProcessFileLine.prototype.readLine = function(filePath, stats){
 
   stream.on('end', function(){
     if(stream.remainder){
-      $em.emit('line', null, stream.remainder.toString());
+      $this.emit('line', null, stream.remainder.toString());
     }
-    $this.em.emit('end');
+    $this.emit('end');
   });
 
   stream.on('close', function(){
@@ -91,15 +92,15 @@ var outStream = fs.createWriteStream('c:/tmp/1.josn');
 
 var pfl = new ProcessFileLine();
 
-pfl.em.on('start', function(){
+pfl.on('start', function(){
   outStream.write("[\n");
 });
 
-pfl.em.on('end', function(){
+pfl.on('end', function(){
   outStream.write("]\n");
 });
 
-pfl.em.on('line', function(err, line){
+pfl.on('line', function(err, line){
   var LINE_PATTERN = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - - \[(\d{1,2}\/[a-zA-Z]{3}\/\d{4}:\d{2}:\d{2}:\d{2} -\d{4})\] "([A-Z]+) (.+?) HTTP\/1\.1" (\d{3}) (\d+) "(.+?)" "(.+?)"/
 
   if (result = line.match(LINE_PATTERN)) {
@@ -124,7 +125,7 @@ pfl.em.on('line', function(err, line){
   }
 });
 
-pfl.em.on('progress', function(readBytes, totalBytes){
+pfl.on('progress', function(readBytes, totalBytes){
   var percent = parseInt(readBytes / totalBytes * 100);
   if(percent > pfl.progress){
     console.log("Finish: %d, %d / %d", percent, readBytes, totalBytes);
