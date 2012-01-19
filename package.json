@@ -8,12 +8,10 @@
     , "socket.io": ">= 0.0.1"
     , "connect-form": ">= 0.0.1"
     , "kue": ">= 0.0.1"
-    , "lazy": ">= 0.0.1"
     , "async": ">= 0.0.1"
     , "uuid-js": ">= 0.0.1"
     , "request": ">= 0.0.1"
     , "config": ">= 0.0.1"
-    , "comb": ">= 0.0.1"
   }
   , "devDependencies" : {
       "mocha": ">= 0.3.6"

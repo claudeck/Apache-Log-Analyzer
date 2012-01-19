@@ -1,69 +1,67 @@
 var fs = require('fs');
-var path = require('path');
-var Lazy = require('lazy');
-var async = require('async');
 var solr = require('./solr');
-var Util = require('./utils');
+var Utils = require('./utils/utils');
+var ReadLine = require('./utils/readline');
 var UUID = require('uuid-js');
 var util = require('util');
+var jobListeners = require('./job_listen');
 
 var LINE_PATTERN = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - - \[(\d{1,2}\/[a-zA-Z]{3}\/\d{4}:\d{2}:\d{2}:\d{2} -\d{4})\] "([A-Z]+) (.+?) HTTP\/1\.1" (\d{3}) (\d+) "(.+?)" "(.+?)"/
 
-
 function importToSolr(logFile, done) {
-    console.log("Processing " + logFile.fileName);
-    var tmpFileName = '/tmp/' + logFile.fileName + ".json";
-    new Lazy(fs.createReadStream(logFile.logFilePath))
-        .lines
-        .map(function (line) {
-            var result = null;
-            if (result = line.toString().match(LINE_PATTERN)) {
-                return {
-                    id:UUID.create().toString(),
-                    logFileName:logFile.fileName,
-                    ipString:result[1],
-                    ipInteger:Util.ipToInteger(result[1]),
-                    accessTime:Util.formatSolrTime(Util.parseApacheTime(result[2])),
-                    method:result[3],
-                    uri:result[4],
-                    responseCode:result[5],
-                    responseBytes:new Number(result[6]),
-                    referrer:result[7],
-                    userAgent:result[8]
-                };
-            } else {
-                return {};
-            }
-        })
-        .filter(function (log) {
-            return log.responseCode == '500';
-        })
-        .join(function (logs) {
+  var outFileName = '/tmp/' + logFile.fileName + ".json"
+  var outStream = fs.createWriteStream(outFileName);
 
-            function submitRecordToSolr(err) {
-                solr.upload(tmpFileName,
-                    function (err, res, body) {
-                        console.log('success import!');
-                        done();
-                    });
-            }
+  var readline = new ReadLine();
 
-            fs.open(tmpFileName, 'w', 0666, function (err, fd) {
-                var buf = new Buffer(util.inspect(logs));
-                fs.write(fd, buf, 0, buf.length, null, submitRecordToSolr);
-            });
-        });
+  readline.on('start', function() {
+    outStream.write("[\n");
+  });
+
+  readline.on('progress', function(readBytes, totalBytes) {
+    var percent = parseInt(readBytes / totalBytes * 100);
+    if (percent > readline.progress) {
+      console.log("Finish: %d, %d / %d", percent, readBytes, totalBytes);
+      jobListeners.progress(percent);
+      readline.progress = percent;
+    }
+  })
+
+  readline.on('line', function(err, line) {
+    if (result = line.match(LINE_PATTERN)) {
+      var responseCode = result[5];
+      if (responseCode == 500) {
+        var log = {
+          id: UUID.create().toString(),
+          logFileName: logFile.fileName,
+          ipString: result[1],
+          ipInteger: Utils.ipToInteger(result[1]),
+          accessTime: Utils.formatSolrTime(Utils.parseApacheTime(result[2])),
+          method: result[3],
+          uri: result[4],
+          responseCode: responseCode,
+          responseBytes: new Number(result[6]),
+          referrer: result[7],
+          userAgent: result[8]
+        };
+
+        outStream.write(util.inspect(log) + ",\n");
+      }
+    }
+  });
+
+  readline.on('end', function() {
+    outStream.write("]\n");
+  });
+
+  readline.on('close', function() {
+    solr.upload(outFileName, function(err, res, body) {
+      console.log('success import!');
+      done();
+    });
+  })
+
+  readline.readFile(logFile.logFilePath);
 }
 
 exports.importToSolr = importToSolr;
-
-/*
- function main() {
- importToSolr({
- fileName : 'log1.log',
- logFilePath : '/home/administrator/node/ala/importer/test_log/1.ssl_access_log'
- }, function(){});
- }
-
- main()
- */
