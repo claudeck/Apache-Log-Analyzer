@@ -1,0 +1,14 @@
+{
+  "Solr": {
+    "url": {
+      "protocol": "http:",
+      "slashes": true,
+      "host": "localhost:8080",
+      "port": "8080",
+      "hostname": "localhost",
+      "href": "http://localhost:8080/solr",
+      "pathname": "/solr",
+      "path": "/solr"
+    }
+  }
+}

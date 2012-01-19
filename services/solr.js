@@ -3,12 +3,10 @@ var fs = require('fs');
 var url = require('url');
 var SolrServer = require('config').Solr;
 
-SolrServer.url = url.parse(SolrServer.url);
-
 exports.upload = function (jsonFile, callback) {
     fs.createReadStream(jsonFile).pipe(
         request({
-                uri: SolrServer.url + '/update/json?commit=true',
+                uri: url.format(SolrServer.url) + '/update/json?commit=true',
                 json:true
             },
             function (error, response, body) {
@@ -24,10 +22,10 @@ exports.upload = function (jsonFile, callback) {
 
 exports.search = function (queryOptions, callback) {
     var searchUrl = url.format({
-        protocol: 'http',
-        hostname: 'localhost',
-        port: 8080,
-        pathname: '/solr/select/',
+        protocol: SolrServer.url.protocol,
+        hostname: SolrServer.url.hostname,
+        port: SolrServer.url.port,
+        pathname: SolrServer.url.pathname + '/select/',
         query: {
             q:queryOptions.q,
             version:2.2,

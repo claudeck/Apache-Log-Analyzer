@@ -33,7 +33,6 @@ exports.index = function (req, res) {
 exports.jobs = function (req, res) {
     Job.range(0, 10, 'desc', function(err, jobs){
         if (err) return res.send({ error: err.message });
-        console.log(util.inspect(jobs));
         res.render('jobs', 
             {
                 title: 'Job Processing', 
@@ -70,7 +69,7 @@ exports.uploadLogFile = function (req, res, next) {
                     
                 job.on('progress', function(progress){
                     jobListeners.progress({
-                        jobId: jobId,
+                        jobId: job.id,
                         progress: progress
                     });
                 });

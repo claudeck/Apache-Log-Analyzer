@@ -58,7 +58,7 @@ socket.sockets.on('connection', function(socket){
         up.addTask(socket);
     });
     
-    socket.on('START_JOB_LISTEN', function(data){
+    socket.on('START_JOB_LISTEN', function(){
         jobListeners.addListener(socket);
     })
 });

@@ -13,7 +13,7 @@ block append scripts
       });
 
       socket.on('JOB_LISTEN', function(data){
-        $('#progress_' + data.jobId).width(data.percent + '%');
+        $('#progress_' + data.jobId).width(data.progress + '%');
       });
     });
 
@@ -38,5 +38,5 @@ block content
               strong Processing:&nbsp;
             p  
               div.row(style='background-color:red;min-height:20px; margin:0px')
-                  div#progress_#{item.id}.row(style='background-color:blue; min-height:20px; width:25%; margin:0px')
+                  div.row(id='progress_#{item.id}', style='background-color:blue; min-height:20px; width:#{item._progress ? item._progress : 0}%; margin:0px')
       - });

@@ -1,7 +1,7 @@
 var fs = require('fs');
 var solr = require('./solr');
-var Utils = require('./utils/utils');
-var ReadLine = require('./utils/readline');
+var Utils = require('../utils/utils');
+var ReadLine = require('../utils/readline');
 var UUID = require('uuid-js');
 var util = require('util');
 
@@ -22,7 +22,7 @@ function importToSolr(job, done) {
     var percent = parseInt(readBytes / totalBytes * 100);
     if (percent > readline.progress) {
       console.log("Finish: %d, %d / %d", percent, readBytes, totalBytes);
-      job.emit('progress', percent);
+      job.progress(readBytes, totalBytes);
       readline.progress = percent;
     }
   })
