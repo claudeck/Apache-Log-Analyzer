@@ -2,4 +2,4 @@ Server:
   port: 3333
 
 Solr:
-  url: http://localhost:8080/solr
+  url: 'http://localhost:8080/solr'
