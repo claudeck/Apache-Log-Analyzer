@@ -61,7 +61,21 @@ block append scripts
       $('#fileName').val('#{params.fileName}');
       $('#referrer').val('#{params.referrer}');
       $('#userAgent').val('#{params.userAgent}');
+      $('#browserFamily').val('#{params.browserFamily}');
       $('#start').val(start);
+      $('#searchForm').submit();
+    }
+
+    function filter(facet){
+      $('#keyword').val('#{params.keyword}');
+      $('#dateStart').val('#{params.dateStart}');
+      $('#dateEnd').val('#{params.dateEnd}');
+      $('#uriKeyword').val('#{params.uriKeyword}');
+      $('#fileName').val('#{params.fileName}');
+      $('#referrer').val('#{params.referrer}');
+      $('#userAgent').val('#{params.userAgent}');
+      $('#browserFamily').val('"' + facet.browserFamily + '"');
+      $('#start').val(0);
       $('#searchForm').submit();
     }
 
@@ -69,6 +83,7 @@ block append scripts
       for(var k in values){
         $('#' + k).val(values[k]);
       }
+      $('#browserFamily').val('');
       $('#start').val(0);
       $('#searchForm').submit();
     }
@@ -79,6 +94,7 @@ block content
       h3 Search Form
       form(id='searchForm', name='searchForm', method='post', action='/search')
         input(type='hidden', name='start', id='start', value='0')
+        input(type='hidden', name='browserFamily', id='browserFamily', value='')
         dir.row
           div.span7
             label(for='keyword') Keyword
@@ -139,33 +155,25 @@ block content
               p
                 strong Referrer:&nbsp;
                 | #{item.referrer}
-              p
-                strong UserAgent:&nbsp;
-                | #{item.userAgent}
+              p(title='#{item.userAgent}')
+                strong Browser:&nbsp;
+                | #{item.browserVersion}
+                strong OS:&nbsp;
+                | #{item.os}
           - })
           mixin pagination(responseJson.response.numFound, new Number(responseJson.responseHeader.params.start), 10)
 
         div#facetResult.span4
           dir.alert-message.success
             p Catalog Result
-          div.row
-            div.span2
-              ul
-                strong Status Code
-                li 500(123)
-                li 404(123)
-                li 200(12351)
-          div.row
-            div.span2
-              ul
-                strong Stats
-                li CA(123)
-                li LA(123)
-                li MA(12351)
-          div.row
-            div.span2
-              ul
-                strong Browser
-                li Chrome(123)
-                li FireFox(123)
-                li IE(12351)
+          - for(var facetField in responseJson.facet_counts.facet_fields){  
+          -   var values = responseJson.facet_counts.facet_fields[facetField];
+            div.row
+              div.span4
+                ul
+                  h4 #{facetField}
+                  - for(var f = 0; f < values.length; f += 2){
+                    li 
+                      a(href='#', onclick='filter({browserFamily:"#{values[f]}"})') #{values[f]}(#{values[f+1]})
+                  - }
+          - }

@@ -1,7 +1,7 @@
 mixin menu(uri, title, activeMenu)
   if(activeMenu == title)
     li.active
-      a(href='#')=title
+      a(href='#{uri}')=title
   else
     li
       a(href='#{uri}')=title

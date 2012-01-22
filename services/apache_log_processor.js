@@ -4,6 +4,7 @@ var Utils = require('../utils/utils');
 var ReadLine = require('../utils/readline');
 var UUID = require('uuid-js');
 var util = require('util');
+var useragent = require('useragent');
 
 var LINE_PATTERN = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - - \[(\d{1,2}\/[a-zA-Z]{3}\/\d{4}:\d{2}:\d{2}:\d{2} -\d{4})\] "([A-Z]+) (.+?) HTTP\/1\.1" (\d{3}) (\d+) "(.+?)" "(.+?)"/
 
@@ -27,25 +28,38 @@ function importToSolr(job, done) {
     }
   })
 
+  var firstLine =true;
+
   readline.on('line', function(err, line) {
     if (result = line.match(LINE_PATTERN)) {
       var responseCode = result[5];
       if (responseCode == 500) {
+        var userAgentString = result[8];
+        var agent = useragent.lookup(userAgentString);
         var log = {
           id: UUID.create().toString(),
           logFileName: logFile.fileName,
+          jobId: job.id,
           ipString: result[1],
           ipInteger: Utils.ipToInteger(result[1]),
           accessTime: Utils.formatSolrTime(Utils.parseApacheTime(result[2])),
           method: result[3],
           uri: result[4],
           responseCode: responseCode,
-          responseBytes: new Number(result[6]),
+          responseBytes: parseInt(result[6]),
           referrer: result[7],
-          userAgent: result[8]
+          userAgent: userAgentString,
+          browserFamily: agent.family,
+          browserMainVersion: agent.major,
+          browserVersion: agent.toAgent(),
+          os: agent.os
         };
-
-        outStream.write(util.inspect(log) + ",\n");
+        if(firstLine){
+          outStream.write(JSON.stringify(log) + '\n');
+          firstLine = false;
+        }else{
+          outStream.write("," + JSON.stringify(log) + '\n');
+        }
       }
     }
   });

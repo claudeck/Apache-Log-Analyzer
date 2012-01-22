@@ -114,7 +114,8 @@ function createQuery(req){
       accessTime: buildAccessTime(req.body.dateStart, req.body.dataEnd),
       uri: req.body.uriKeyword,
       referrer: req.body.referrer,
-      userAgent: req.body.userAgent
+      userAgent: req.body.userAgent,
+      browserFamily: req.body.browserFamily
     };
 
     var hasConditions = false;

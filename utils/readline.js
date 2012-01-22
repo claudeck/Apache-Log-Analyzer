@@ -38,9 +38,9 @@ ProcessFileLine.prototype.readLine = function(filePath, stats){
   });
 
   stream.on('data', function(data){
-    for(var i = 0; i < 10000000; i++){
+    // for(var i = 0; i < 10000000; i++){
       
-    }
+    // }
     var dataLength = data.length;
     var newLine = '\n';
     stream.readLength += dataLength;
