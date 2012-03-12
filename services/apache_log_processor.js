@@ -26,7 +26,7 @@ function importToSolr(job, done) {
       job.progress(readBytes, totalBytes);
       readline.progress = percent;
     }
-  })
+  });
 
   var firstLine =true;
 
