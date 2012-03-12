@@ -19,13 +19,31 @@ jobs.process('logfile', 2, function (job, done) {
     alp.importToSolr(job, done);
 });
 
+function getParam(params){
+    var obj = {
+        keyword: '',
+        dateStart: '',
+        dateEnd: '',
+        uriKeyword: '',
+        fileName: '',
+        referrer: '',
+        userAgent: '',
+        browserFamily: '',
+        start: 0
+    };
+    for (var prop in params){
+        obj[prop] = params[prop];
+    }
+    return obj;
+}
+
 exports.index = function (req, res) {
     res.render('index', 
         { 
             title:'Apache Logs Analyzer', 
             activeMenu:'Log Search', 
             responseJson: null,
-            params: {} 
+            params: getParam({}) 
         }
     );
 };
@@ -110,12 +128,12 @@ function buildAccessTime(dateStart, dateEnd){
 
 function createQuery(req){
     var keywords = {
-      keyword: req.params.keyword,
-      accessTime: buildAccessTime(req.params.dateStart, req.params.dataEnd),
-      uri: req.params.uriKeyword,
-      referrer: req.params.referrer,
-      userAgent: req.params.userAgent,
-      browserFamily: req.params.browserFamily
+      keyword: req.query.keyword,
+      accessTime: buildAccessTime(req.query.dateStart, req.query.dataEnd),
+      uri: req.query.uriKeyword,
+      referrer: req.query.referrer,
+      userAgent: req.query.userAgent,
+      browserFamily: req.query.browserFamily
     };
 
     var hasConditions = false;
@@ -137,7 +155,7 @@ exports.search = function(req, res, next){
     solr.search(
         {
             q: createQuery(req),
-            start: req.params.start
+            start: req.query.start
         },
         function(err, responseJson){
             if(err){
@@ -148,7 +166,7 @@ exports.search = function(req, res, next){
                         title:'Apache Logs Analyzer', 
                         activeMenu:'Log Search', 
                         responseJson: responseJson,
-                        params: req.params 
+                        params: getParam(req.query) 
                     }
                 );
             }
