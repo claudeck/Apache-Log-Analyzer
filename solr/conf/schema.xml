@@ -512,6 +512,7 @@
    <field name="browserMainVersion" type="string" indexed="true" stored="true"/>
    <field name="browserVersion" type="string" indexed="true" stored="true"/>
    <field name="os" type="string" indexed="true" stored="true"/>
+   <field name="keyword" type="text_general" indexed="true" multiValued="true"/>
    
  </fields>
 
@@ -525,5 +526,13 @@
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="AND"/>
+
+ <copyField source="ipString" dest="keyword"/>
+ <copyField source="method" dest="keyword"/>
+ <copyField source="uri" dest="keyword"/>
+ <copyField source="responseCode" dest="keyword"/>
+ <copyField source="referrer" dest="keyword"/>
+ <copyField source="userAgent" dest="keyword"/>
+ <copyField source="browserFamily" dest="keyword"/>
 
 </schema>

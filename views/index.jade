@@ -92,26 +92,26 @@ block content
   div.content
     div.page-header
       h3 Search Form
-      form(id='searchForm', name='searchForm', method='post', action='/search')
-        input(type='hidden', name='start', id='start', value='0')
-        input(type='hidden', name='browserFamily', id='browserFamily', value='')
+      form(id='searchForm', name='searchForm', method='get', action='/search')
+        input(type='hidden', name='start', id='start', value='#{params.start}')
+        input(type='hidden', name='browserFamily', id='browserFamily', value='#{params.browserFamily}')
         dir.row
           div.span7
             label(for='keyword') Keyword
             div.input
-              input#keyword.xlarge(name='keyword', type='text')
+              input#keyword.xlarge(name='keyword', type='text', value="#{params.keyword}")
           div.span7
             label Date Range
             div.input
               div.inline-inputs
-                input#dateStart.small(name='dateStart', type='text')
+                input#dateStart.small(name='dateStart', type='text', value="#{params.dateStart}")
                 | &nbsp;-&nbsp;
-                input#dateEnd.small(name='dateEnd', type='text')
+                input#dateEnd.small(name='dateEnd', type='text', value="#{params.dateEnd}")
         dir.row
           div.span7
             label Uri
             div.input
-              input#uriKeyword.xlarge(name='uriKeyword', type='text')
+              input#uriKeyword.xlarge(name='uriKeyword', type='text', value="#{params.uriKeyword}")
           div.span7
             label File Name
             div.input
@@ -121,11 +121,11 @@ block content
           div.span7
             label Referrer
             div.input
-              input#referrer.xlarge(name='referrer', type='text')
+              input#referrer.xlarge(name='referrer', type='text', value="#{params.referrer}")
           div.span7
             label UserAgent
             div.input
-              input#userAgent.xlarge(name='userAgent', type='text')
+              input#userAgent.xlarge(name='userAgent', type='text', value="#{params.referrer}")
         div.actions
           input#searchBtn.btn.primary(type='button', value='Search')
 

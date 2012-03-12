@@ -110,12 +110,12 @@ function buildAccessTime(dateStart, dateEnd){
 
 function createQuery(req){
     var keywords = {
-      keyword: req.body.keyword,
-      accessTime: buildAccessTime(req.body.dateStart, req.body.dataEnd),
-      uri: req.body.uriKeyword,
-      referrer: req.body.referrer,
-      userAgent: req.body.userAgent,
-      browserFamily: req.body.browserFamily
+      keyword: req.params.keyword,
+      accessTime: buildAccessTime(req.params.dateStart, req.params.dataEnd),
+      uri: req.params.uriKeyword,
+      referrer: req.params.referrer,
+      userAgent: req.params.userAgent,
+      browserFamily: req.params.browserFamily
     };
 
     var hasConditions = false;
@@ -137,7 +137,7 @@ exports.search = function(req, res, next){
     solr.search(
         {
             q: createQuery(req),
-            start: req.body.start
+            start: req.params.start
         },
         function(err, responseJson){
             if(err){
@@ -148,7 +148,7 @@ exports.search = function(req, res, next){
                         title:'Apache Logs Analyzer', 
                         activeMenu:'Log Search', 
                         responseJson: responseJson,
-                        params: req.body 
+                        params: req.params 
                     }
                 );
             }

@@ -47,7 +47,7 @@ app.get('/', routes.index);
 app.get('/upload', routes.upload);
 app.get('/jobs/:id?', routes.jobs);
 app.post('/upload', routes.uploadLogFile);
-app.post('/search', routes.search);
+app.get('/search', routes.search);
 
 app.listen(config.Server.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
